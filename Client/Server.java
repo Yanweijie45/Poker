@@ -45,9 +45,9 @@ public class Server extends JFrame implements ActionListener {
 			"14", "15" };
 
 	// 随机分成的四组
-	String[][] player = new String[4][25];
+	String[][] player = new String[4][25];//4个人
 
-	Server() {
+	Server() {//服务器GUI
 		setTitle("服务器");
 		setSize(400, 500);
 		setLocationRelativeTo(null);
@@ -85,6 +85,9 @@ public class Server extends JFrame implements ActionListener {
 		close.addActionListener(this);
 	}
 
+	
+	
+	
 	/*
 	 * 随机分成四组牌分发给玩家
 	 */
