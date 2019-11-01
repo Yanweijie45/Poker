@@ -5,7 +5,14 @@ import java.awt.event.ActionListener;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.net.Socket;
+import java.net.UnknownHostException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.*;
 
 public class Register extends JFrame implements ActionListener {
@@ -57,11 +64,34 @@ public class Register extends JFrame implements ActionListener {
 		area.add(OK);
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == OK) {
+			if (Loginid.getText().trim().equals("")
+					|| Password.getText().trim().equals("")) {
+				JOptionPane.showMessageDialog(this, "信息填写不完整！", "友情提示",
+						JOptionPane.WARNING_MESSAGE);
+				return;
+			} 
+			try {
+				s = new Socket(serverIP, 6666);
+				is = new DataInputStream(s.getInputStream());
+				os = new DataOutputStream(s.getOutputStream());
+				os.writeUTF("register");
+				os.writeUTF(Loginid.getText().trim());
+				os.writeUTF(Password.getText().trim());
+				String result=is.readUTF();
+				if(result.equals("success")){
+					JOptionPane.showMessageDialog(this, "注册成功！", "友情提示",
+							JOptionPane.INFORMATION_MESSAGE);
+					this.dispose();
+				}else
+					JOptionPane.showMessageDialog(this, "用户名已存在！", "友情提示",
+							JOptionPane.WARNING_MESSAGE);
+			} catch (Exception exp) {
+				JOptionPane.showMessageDialog(this, "未连接服务器！", "友情提示",
+						JOptionPane.WARNING_MESSAGE);
+			}
+		}
+
 	}
-
-
 }
