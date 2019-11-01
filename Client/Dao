@@ -1,0 +1,90 @@
+package game;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class Dao {
+	
+	public static String driverName = "com.mysql.jdbc.Driver"; // 加载JDBC驱动
+
+	public static String dbURL = "jdbc:mysql://localhost:3306/poker?useUnicode=true&characterEncoding=GBK"; // 连接服务器和数据库
+
+	public static String userName = "root"; // 默认用户名
+
+	public static String userPwd = "5210ywj"; // 密码
+
+	public static Connection con = null;
+
+	public Dao() {
+		try {
+			if (con == null) {
+				Class.forName(driverName);
+				con = DriverManager.getConnection(dbURL, userName, userPwd);
+				System.out.println("数据库已连接!");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/*
+	 * 检查账号和密码是否正确
+	 */
+	public String Check(String id, String psw) {
+		String info = "0"; 
+		PreparedStatement ps=null;
+		if(con ==null) {
+			System.out.println("数据库未连接!");
+		}
+		try {
+			String sql = "select * from userinfo where userid=? and password=?";
+			ps = con.prepareStatement(sql);
+			ps.setString(1, id);
+			ps.setString(2, psw);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				if (rs.getString("state").trim().equals("1")) {
+					info = "1"; 
+				} else {
+					info = "2"; 
+				}
+			}
+			ps.close();
+		} catch (SQLException e) {
+		}
+		return info;
+	}
+
+	/*
+	 * 检查账号是否存在
+	 */
+	public boolean Check(String id) {
+		try {
+			String sql = "select * from userinfo where userid=?";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, id);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next())
+				return true;
+			ps.close();
+		} catch (SQLException e) {
+		}
+		return false;
+	}
+  /*
+   *添加用户
+   */
+  public void Adduser(String id, String psw) {
+		try {
+			Statement sql = con.createStatement();
+			sql.execute("insert into userinfo(userid,password,state,score,icon)values('"
+					+ id + "','" + psw + "','0',0,'0')");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+}
