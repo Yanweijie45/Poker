@@ -1,4 +1,3 @@
-
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,7 +31,8 @@ public class Server extends JFrame implements ActionListener {
 	Socket you;
 
 	InetAddress youraddress;
-
+	String[] pai= new String[108];
+	String[] dizhupai= new String[8];
 	Dao dao;
 
 	// 存放线程
@@ -47,8 +47,7 @@ public class Server extends JFrame implements ActionListener {
 
 	// 随机分成的四组
 	String[][] player = new String[4][25];
-	String[] pai= new String[108];
-	String[] dizhupai= new String[8];
+    
 	Server() {
 		setTitle("服务器");
 		setSize(400, 500);
@@ -92,57 +91,86 @@ public class Server extends JFrame implements ActionListener {
 	/*
 	 * 随机分成四组牌分发给玩家
 	 */
+	
+	
+	public static void Paixu(int[] x, int begin, int end) {
+		
+		
+		
+		for (int i = begin; i < end; i++) {
+			for (int j = i + 1; j <= end; j++) {
+				if (x[i] > x[j]) {
+					int temp = x[i];
+					x[i] = x[j];
+					x[j] = temp;
+				}
+			}
+		}
+	}
 	public void Randomization() {
 		
-	  int n=0;
-		for (int i = 0; i < 13; i++)//牌的点数
-			for (int j = 0; j <8; j++) {//牌的花色
-				pai[n++]=	 color[j] + num[i];}
-		
-		pai[n++]="b1";
-		pai[n++]="b2";
-		pai[n++]="r1";
-		pai[n++]="r2";
-		
-		int [] ischoose=new int[108];
-		for (int i = 0; i < 108; i++) 
-			ischoose[i]=0;//标记是否被发
-		
-		
-		
+		  int n=0;
+			for (int i = 0; i < 13; i++)//牌的点数
+				for (int j = 0; j <8; j++) {//牌的花色
+					pai[n++]=	 color[j] + num[i];}
+			
+			pai[n++]="b15";
+			pai[n++]="b15";
+			pai[n++]="r15";
+			pai[n++]="r15";
+			
+			int [] ischoose=new int[108];
+			for (int i = 0; i < 108; i++) 
+				ischoose[i]=0;//标记是否被发
+			
+			
+			
 
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 25; j++) {
-			int row = (new Random().nextInt(108));
-			if(ischoose[row]==0) {
-			player[i][j]=pai[row];
-			ischoose[row]=1;
-			}
-			else {
-				while(ischoose[row]==1) {
-				row = (new Random().nextInt(108));
-				}//一定要发出这张派
+			for (int i = 0; i < 4; i++) {
+				for (int j = 0; j < 25; j++) {
+				int row = (new Random().nextInt(108));
+				if(ischoose[row]==0) {
 				player[i][j]=pai[row];
+				ischoose[row]=1;
+				}
+				else {
+					while(ischoose[row]==1) {
+					row = (new Random().nextInt(108));
+					}//一定要发出这张派
+					player[i][j]=pai[row];
+						
+					}
 					
 				}
-				
+				}	
+			 
+			for (int i = 0; i < 108; i++) {//找出地主牌
+				int n1=0;
+				if(ischoose[i]==0) {
+					dizhupai[n1++]=pai[i];
+					
+				}	
 			}
-			}	
-		 
-		for (int i = 0; i < 108; i++) {//找出地主牌
-			int n1=0;
-			if(ischoose[i]==0) {
-				dizhupai[n1++]=pai[i];
+			for (int i = 0; i < 4; i++) {  //洗牌
+			maoPao(player[i]);
 				
+			
+		}}
+		
+	public static void maoPao(String[] x) {
+		
+		for (int i = 0; i < 25; i++) {
+			for (int j = i + 1; j < 25; j++) {
+				if (Integer.parseInt(x[i].substring(1,x[i].length()))
+						>Integer.parseInt(x[j].substring(1,x[j].length()))) {
+					String temp = x[i];
+					x[i] = x[j];
+					x[j] = temp;
+					
+				}
 			}
-			
-			
-			
 		}
-	
 	}
-	
-	
 	public void startServer(int port) {
 		try {
 			server = new ServerSocket(port);
@@ -178,11 +206,7 @@ public class Server extends JFrame implements ActionListener {
 
 		int seatnum; // table的seat号
 
-		/*
-		 * 该线程的位置属性,"hall"表示大厅线程，"seat"表示seat线程,
-		 * 一个player刚登陆时启动一个线程，由于socket不能共享，故在
-		 * 进入seat后的线程和刚刚进入大厅的线程标志区别就在location上
-		 */
+	
 		String location = null;
 
 		boolean readyflag = false; // 游戏是否准备好
@@ -199,3 +223,18 @@ public class Server extends JFrame implements ActionListener {
 			} catch (IOException e) {
 			}
 		}
+
+	public void actionPerformed(ActionEvent arg0) {
+		int result = JOptionPane.showConfirmDialog(this, "确定退出？", "提示",
+				JOptionPane.YES_NO_OPTION);
+		if (result == JOptionPane.YES_OPTION) {
+			dao.setAllState("0");
+			System.exit(0);
+		}
+	}
+
+	public static void main(String[] args) {
+		new Server();
+		
+	}
+}
