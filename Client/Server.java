@@ -303,6 +303,50 @@ public class Server extends JFrame implements ActionListener {
 						}else
 							os.writeUTF("failed");
 					}
+					if (s.equals("gameinfo")) {
+						String type = is.readUTF();// 不出、出牌或超时
+						if (type.equals("jiaofen")) {
+							for (int i = 0; i < playerlist.size(); i++) {
+								ServerThread th = playerlist.get(i);
+								if (th != this && th.tablenum == this.tablenum
+										&& th.location.equals("seat")) {
+									th.os.writeUTF("oneplayerjiaofen");
+									th.os.writeUTF(this.seatnum + "");
+								}
+							}
+						}
+						else if (type.equals("buchu")) {
+							for (int i = 0; i < playerlist.size(); i++) {
+								ServerThread th = playerlist.get(i);
+								if (th != this && th.tablenum == this.tablenum
+										&& th.location.equals("seat")) {
+									th.os.writeUTF("oneplayerbuchu");
+									th.os.writeUTF(this.seatnum + "");
+								}
+							}
+						} else if (type.equals("chaoshi")) {
+							for (int i = 0; i < playerlist.size(); i++) {
+								ServerThread th = playerlist.get(i);
+								if (th != this && th.tablenum == this.tablenum
+										&& th.location.equals("seat")) {
+									th.os.writeUTF("oneplayerchaoshi");
+									th.os.writeUTF(this.seatnum + "");
+								}
+							}
+						} else if (type.equals("chupai")) {
+							String info = is.readUTF();
+							for (int i = 0; i < playerlist.size(); i++) {
+								ServerThread th = playerlist.get(i);
+								if (th != this && th.tablenum == this.tablenum
+										&& th.location.equals("seat")) {
+									th.os.writeUTF("oneplayerchupai");
+									th.os.writeUTF(this.seatnum + "");
+									th.os.writeUTF(info);
+								}
+							}
+						}
+
+					}
 				} catch (IOException e) {
 					try {
 						socket.close();
