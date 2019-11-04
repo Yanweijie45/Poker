@@ -223,6 +223,97 @@ public class Server extends JFrame implements ActionListener {
 			} catch (IOException e) {
 			}
 		}
+		public void run() {
+			SimpleDateFormat tempDate = new SimpleDateFormat(
+					"yyyy-MM-dd HH:mm:ss");
+			String nowtime;
+			String s = "";
+			while (true) {
+				try {
+					s = is.readUTF();
+					/*
+					 * 登录信息
+					 */
+					if (s.startsWith("login")) {
+						id = is.readUTF();
+						psw = is.readUTF();
+						String result = dao.Check(id, psw);
+						if (result.equals("2")) {
+							/*
+							 * 成功登录,发送到客户端信息
+							 */
+							dao.setState("1", id);
+							os.writeUTF("2");
+							/*
+							 * 向客户端发送当前有哪些玩家在线
+							 */
+							os.writeUTF("otheronlineplayer");
+							for (int i = 0; i < playerlist.size(); i++) {
+								ServerThread th = playerlist.get(i);
+								if (th != this && th.location.equals("hall"))
+									os.writeUTF(th.id);
+							}
+							os.writeUTF("END1");
+							/*
+							 * 向客户端发送seat里面的玩家
+							 */
+							for (int i = 0; i < playerlist.size(); i++) {
+								ServerThread th = playerlist.get(i);
+								if (th.location.equals("seat")) {
+									os.writeUTF((th.tablenum + "").toString());
+									os.writeUTF((th.seatnum + "").toString());
+									os.writeUTF(dao.getIcon(th.id));
+								}
+							}
+							os.writeUTF("END2");
+							os.writeUTF(dao.getScore(this.id) + "");
+							os.writeUTF(dao.getIcon(this.id));
+							/*
+							 * 登陆后将自己加入到playerlist链表中，并向其他玩家发送进入房间信息
+							 */
+							playerlist.add(this);
+							for (int i = 0; i < playerlist.size(); i++) {
+								ServerThread th = playerlist.get(i);
+								th.os.writeUTF("Newcomer");
+								th.os.writeUTF(id);
+							}
+
+							// 服务器记录日志
+							nowtime = tempDate.format(new java.util.Date());
+							text.append(nowtime + "\n用户：" + id + "\nIP地址："
+									+ youraddress.toString() + " 进入了房间\n");
+
+						} else if (result.equals("1")) {
+							os.writeUTF("1"); // 重复登录
+							break;
+						} else {
+							os.writeUTF("0"); // 错误
+							break;
+						}
+					}
+					/*
+					 * 注册信息
+					 */
+					if (s.equals("register")) {
+						String name=is.readUTF();
+						String psw=is.readUTF();
+						if(!dao.Check(name)){
+							dao.Adduser(name, psw);
+							os.writeUTF("success");
+						}else
+							os.writeUTF("failed");
+					}
+				} catch (IOException e) {
+					try {
+						socket.close();
+					} catch (IOException e1) {
+					}
+	
+					break;
+				}
+			}
+		}
+	}
 
 	public void actionPerformed(ActionEvent arg0) {
 		int result = JOptionPane.showConfirmDialog(this, "确定退出？", "提示",
