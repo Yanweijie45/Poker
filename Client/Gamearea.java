@@ -117,3 +117,206 @@ public class Gamearea extends JFrame implements MouseListener, Runnable,
 		timepass = new Timepass();
 		new Thread(this).start();
 	}
+
+	public void initGUI() {
+		setTitle("Rush");
+		setIconImage(new ImageIcon("pics\\rush.png").getImage());
+		setSize(940, 700);
+		setLocationRelativeTo(null);
+		setVisible(true);
+		setResizable(false);
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		addWindowListener(new ExitWindow());
+
+		allarea = new PanelArea();
+		allarea.setImageFile(new File("pics\\bgxx.png"));
+		add(allarea);
+		allarea.setLayout(null);
+		gamearea = new PanelArea();
+		gamearea.setImageFile(new File("pics\\bgx.png"));
+		gamearea.setBounds(0, 0, 730, 680);
+		allarea.add(gamearea);
+
+		gamearea.setLayout(null);
+		start = new JButton();
+		start.setIcon(new ImageIcon("pics\\button\\startbutton.png"));
+		start.setBounds(330, 570, 66, 34);
+		start.setContentAreaFilled(false);
+		start.setBorderPainted(false);
+		start.addMouseListener((MouseListener) this);
+		/*
+		 * three buttons:chupai、buchu、tishi
+		 */
+		chupai = new JButton();
+		chupai.setBounds(330, 450, 55, 22);
+		chupai.setIcon(new ImageIcon("pics\\button\\出牌.png"));
+		chupai.setContentAreaFilled(false);
+		chupai.setBorderPainted(false);
+		chupai.addMouseListener((MouseListener) this);
+		
+		buchu = new JButton();
+		buchu.setBounds(400, 450, 55, 22);
+		buchu.setIcon(new ImageIcon("pics\\button\\不出.png"));
+		buchu.setContentAreaFilled(false);
+		buchu.setBorderPainted(false);
+		buchu.addMouseListener((MouseListener) this);
+		
+		no = new JButton();
+		no.setText("不叫");
+		no.setBounds(260, 450, 55, 22);
+		no.setContentAreaFilled(true);
+		no.setBorderPainted(false);
+		no.addMouseListener((MouseListener) this);
+		
+		one = new JButton();
+		one.setText("一分");
+		one.setBounds(330, 450, 55, 22);
+		one.setContentAreaFilled(true);
+		one.setBorderPainted(false);
+		one.addMouseListener((MouseListener) this);
+		
+		two = new JButton();
+		two.setText("两分");
+		two.setBounds(400, 450, 55, 22);
+		two.setContentAreaFilled(true);
+		two.setBorderPainted(false);
+		two.addMouseListener((MouseListener) this);
+		
+		three = new JButton();
+		three.setText("两分");
+		three.setBounds(470, 450, 55, 22);
+		three.setContentAreaFilled(true);
+		three.setBorderPainted(false);
+		three.addMouseListener((MouseListener) this);
+
+		chupai.setVisible(false);
+		buchu.setVisible(false);
+		no.setVisible(false);
+		one.setVisible(false);
+		two.setVisible(false);
+		three.setVisible(false);
+		gamearea.add(start);
+		gamearea.add(chupai);
+		gamearea.add(buchu);
+		gamearea.add(no);
+		gamearea.add(one);
+		gamearea.add(two);
+		gamearea.add(three);
+		for (int i = 0; i < 4; i++) {
+			role[i] = new JLabel();
+			role[i].setIcon(new ImageIcon("pics\\role\\rolebg_x.png"));
+			gamearea.add(role[i]);
+			role[i].setLayout(null);
+			rolefropic[i] = new JLabel();
+			rolefropic[i].setBounds(-5, -20, 130, 210);
+			ready[i] = new JLabel();
+			ready[i].setBounds(65, 135, 100, 40);
+			playerinfo[i] = new JLabel();
+			playerinfo[i].setBounds(30, 160, 100, 30);
+			playerinfo[i].setForeground(Color.white);
+			leftcardnum[i] = new JLabel();
+			leftcardnum[i].setBounds(30, 190, 100, 20);
+			leftcardnum[i].setForeground(Color.white);
+			leftcardnum[i].setVisible(false);
+			role[i].add(ready[i]);
+			role[i].add(rolefropic[i]);
+			role[i].add(playerinfo[i]);
+			role[i].add(leftcardnum[i]);
+		}
+		role[seatnum].setBounds(300, 350, 130, 210);
+		role[(seatnum + 1) % 4].setBounds(500, 190, 130, 210);
+		role[(seatnum + 2) % 4].setBounds(300, 30, 130, 210);
+		role[(seatnum + 3) % 4].setBounds(100, 190, 130, 210);
+		rolefropic[seatnum].setIcon(new ImageIcon("pics//role//boyshow2.gif"));
+		playerinfo[seatnum].setText("用户ID:" + playerID);
+
+		for (int i = 0; i < 4; i++) {
+			reready[i] = new JLabel();
+			gamearea.add(reready[i]);
+		}
+		reready[seatnum].setBounds(330, 420, 66, 34);
+		reready[(seatnum + 1) % 4].setBounds(550, 250, 66, 34);
+		reready[(seatnum + 2) % 4].setBounds(330, 200, 66, 34);
+		reready[(seatnum + 3) % 4].setBounds(180, 250, 66, 34);
+
+		timearea = new JLabel();
+		timearea.setBounds(640, 8, 80, 80);
+		gamearea.add(timearea);
+
+		for (int i = 0; i < 4; i++) {
+			clock[i] = new JLabel();
+			clock[i].setVisible(false);
+			clock[i].setIcon(new ImageIcon("pics//time//clock.png"));
+			gamearea.add(clock[i]);
+		}
+		clock[seatnum].setBounds(145, 400, 40, 43);
+		clock[(seatnum + 1) % 4].setBounds(645, 140, 40, 43);
+		clock[(seatnum + 2) % 4].setBounds(150, 20, 40, 43);
+		clock[(seatnum + 3) % 4].setBounds(45, 140, 40, 43);
+
+		/*
+		 * 三个player出的牌
+		 */
+		for (int i = 0; i < 13; i++) {
+			cardfront[(seatnum + 1) % 4][12 - i] = new Card();
+			cardfront[(seatnum + 1) % 4][12 - i].setVisible(false);
+			cardfront[(seatnum + 1) % 4][12 - i].setBounds(570 - i * 15, 250,
+					65, 100);
+			gamearea.add(cardfront[(seatnum + 1) % 4][12 - i]);
+			cardfront[(seatnum + 1) % 4][12 - i].addMouseListener(this);
+		}
+		for (int i = 0; i < 13; i++) {
+			cardfront[(seatnum + 2) % 4][12 - i] = new Card();
+			cardfront[(seatnum + 2) % 4][12 - i].setVisible(false);
+			cardfront[(seatnum + 2) % 4][12 - i].setBounds(440 - i * 15, 140,
+					65, 100);
+			gamearea.add(cardfront[(seatnum + 2) % 4][12 - i]);
+			cardfront[(seatnum + 2) % 4][12 - i].addMouseListener(this);
+		}
+		for (int i = 0; i < 13; i++) {
+			cardfront[(seatnum + 3) % 4][12 - i] = new Card();
+			cardfront[(seatnum + 3) % 4][12 - i].setVisible(false);
+			cardfront[(seatnum + 3) % 4][12 - i].setBounds(280 - i * 15, 245,
+					65, 100);
+			gamearea.add(cardfront[(seatnum + 3) % 4][12 - i]);
+			cardfront[(seatnum + 2) % 4][12 - i].addMouseListener(this);
+		}
+
+		for (int i = 0; i < 4; i++) {
+			buchuarea[i] = new JLabel();
+			buchuarea[i].setIcon(new ImageIcon("pics//不出.png"));
+			buchuarea[i].setVisible(false);
+			gamearea.add(buchuarea[i]);
+		}
+		buchuarea[seatnum].setBounds(330, 420, 90, 40);
+		buchuarea[(seatnum + 1) % 4].setBounds(550, 250, 90, 40);
+		buchuarea[(seatnum + 2) % 4].setBounds(330, 200, 90, 40);
+		buchuarea[(seatnum + 3) % 4].setBounds(180, 250, 90, 40);
+
+		receive = new JTextArea();
+		receive.setBounds(735, 300, 190, 300);
+		receive.setLineWrap(true);
+		receive.setWrapStyleWord(true);
+		receive.setEditable(false);
+		receive.setOpaque(false);
+		receive.setForeground(Color.black);
+		receive.setBorder(javax.swing.BorderFactory
+				.createLineBorder(new java.awt.Color(255, 0, 51)));
+		allarea.add(receive);
+
+		send = new JTextField();
+		send.setBounds(735, 610, 190, 25);
+		send.setOpaque(false);
+		send.setForeground(Color.black);
+		send.setBorder(javax.swing.BorderFactory
+				.createLineBorder(new java.awt.Color(0, 0, 0)));
+		send.addActionListener(this);
+		allarea.add(send);
+
+		exit = new JLabel();
+		exit.setBounds(785, 10, 100, 100);
+		exit.setIcon(new ImageIcon("pics//sets.png"));
+		exit.addMouseListener(this);
+		allarea.add(exit);
+	}
+}
