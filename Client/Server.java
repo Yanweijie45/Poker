@@ -87,6 +87,34 @@ public class Server extends JFrame implements ActionListener {
 		close.addActionListener(this);
 		
 	}
+	
+	public void initarray(int[] x) {
+		for (int i = 0; i < x.length; i++) {
+			x[i]=-1;
+		}
+	}
+	
+	public int Maxnumber(int[] x) {
+		int Maxnum=x[0];
+		int Maxindex=0;
+		for (int i = 1; i < x.length; i++) {
+			if(x[i]>Maxnum) {
+				Maxnum=x[i];
+				Maxindex=i;
+			}
+		}
+		return Maxindex;
+	}
+	
+	public int Notzero(int[] x) {
+		int count=0;
+		for (int i = 0; i < x.length; i++) {
+			if(x[i]!=-1) {
+				count++;
+			}
+		}
+		return count;
+	}
 
 	/*
 	 * 随机分成四组牌分发给玩家
@@ -306,12 +334,36 @@ public class Server extends JFrame implements ActionListener {
 					if (s.equals("gameinfo")) {
 						String type = is.readUTF();// 不出、出牌或超时
 						if (type.equals("jiaofen")) {
+							int number=Integer.parseInt(is.readUTF());
+							numbers[this.seatnum]=number;
+							//System.out.println(this.seatnum+"   "+number);
+							//System.out.println("地主"+Maxnumber(numbers));
+							//System.out.println("非零"+Notzero(numbers));
 							for (int i = 0; i < playerlist.size(); i++) {
 								ServerThread th = playerlist.get(i);
 								if (th != this && th.tablenum == this.tablenum
 										&& th.location.equals("seat")) {
 									th.os.writeUTF("oneplayerjiaofen");
 									th.os.writeUTF(this.seatnum + "");
+									th.os.writeUTF(numbers[Maxnumber(numbers)] + "");
+								}
+							}
+							if(number==3) {
+								for (int i = 0; i < playerlist.size(); i++) {
+									ServerThread th = playerlist.get(i);
+									th.os.writeUTF("jiaofenjieguo");
+									th.os.writeUTF(this.seatnum + "");
+								}
+							}
+							else if(Notzero(numbers)==4) {
+								int dizu=Maxnumber(numbers);
+								if(numbers[Maxnumber(numbers)]==0) {
+									dizu=(new Random().nextInt(100) % 4);
+								}
+								for (int i = 0; i < playerlist.size(); i++) {
+									ServerThread th = playerlist.get(i);
+									th.os.writeUTF("jiaofenjieguo");
+									th.os.writeUTF(dizu + "");
 								}
 							}
 						}
