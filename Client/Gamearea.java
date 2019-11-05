@@ -319,4 +319,242 @@ public class Gamearea extends JFrame implements MouseListener, Runnable,
 		exit.addMouseListener(this);
 		allarea.add(exit);
 	}
+	public void mouseClicked(MouseEvent e) {
+		if (e.getSource() instanceof JButton) {
+			if (e.getSource() == start) {
+				Playsound.play("audio//click.wav");
+				if (Isfirst == false)
+					reready[seatnum]
+							.setIcon(new ImageIcon("pics//reready.png"));
+				else
+					ready[seatnum].setIcon(new ImageIcon("pics//ready.png"));
+				start.setVisible(false);
+
+				try {
+					os.writeUTF("ready");
+				} catch (IOException e1) {
+				}
+
+			}
+			if(e.getSource() == no) {
+				try {
+					os.writeUTF("gameinfo");
+					os.writeUTF("jiaofen");
+					os.writeUTF("0");
+				} catch (IOException e1) {
+				}
+				Isnext = true;
+				no.setVisible(false);
+				one.setVisible(false);
+				two.setVisible(false);
+				three.setVisible(false);
+			}
+			if(e.getSource() == one) {
+				try {
+					os.writeUTF("gameinfo");
+					os.writeUTF("jiaofen");
+					os.writeUTF("1");
+				} catch (IOException e1) {
+				}
+				Isnext = true;
+				no.setVisible(false);
+				one.setVisible(false);
+				two.setVisible(false);
+				three.setVisible(false);
+			}
+			if(e.getSource() == two) {
+				try {
+					os.writeUTF("gameinfo");
+					os.writeUTF("jiaofen");
+					os.writeUTF("2");
+				} catch (IOException e1) {
+				}
+				Isnext = true;
+				no.setVisible(false);
+				one.setVisible(false);
+				two.setVisible(false);
+				three.setVisible(false);
+			}
+			if(e.getSource() == three) {
+				try {
+					os.writeUTF("gameinfo");
+					os.writeUTF("jiaofen");
+					os.writeUTF("3");
+				} catch (IOException e1) {
+				}
+				Isnext = true;
+				no.setVisible(false);
+				one.setVisible(false);
+				two.setVisible(false);
+				three.setVisible(false);
+			}
+			if (e.getSource() == chupai) {
+				int k = 0;
+				String info = "";
+				for (int i = 1; i <= 13; i++) {
+					if (cardclick[i] && !cardsend[i]) {
+						cardsend[i] = true;
+						info += card[i].cardtype + card[i].priority + "#";
+						++k;
+					}
+				}
+				mycard = info.split("#");
+				if (k == 0)// 没选中任何牌
+					return;
+				if (Rule.Issame(myoldcard, cardinfo)) {
+					if (!Rule.Isregular(mycard)) {
+						for (int i = 1; i <= 13; i++) {
+							if (cardclick[i] && cardsend[i])
+								cardsend[i] = false;
+						}
+						return;
+					}
+				} else {
+					if (!Rule.Isregular(mycard, cardinfo)) {
+						for (int i = 1; i <= 13; i++) {
+							if (cardclick[i] && cardsend[i])
+								cardsend[i] = false;
+						}
+						return;
+					} else {
+						for (int i = 0; i < 4; i++) {
+							buchuarea[i].setVisible(false);
+						}
+					}
+				}
+				Repaintleftcard(13 - k);
+				if (k != 0) {
+					getPos(k);
+					new Cardanimation(k).start();
+				}
+				myoldcard = mycard;
+				cardinfo = mycard;
+				Isnext=true;
+				/*
+				 * 发送给服务器出的牌
+				 */
+				try {
+					os.writeUTF("gameinfo");
+					os.writeUTF("chupai");
+					os.writeUTF(info);
+
+				} catch (IOException e1) {
+				}
+				myleftcard -= mycard.length;
+
+				/*
+				 * 如果剩余牌为0,说明自己赢了
+				 */
+				if (myleftcard == 0)
+					try {
+						os.writeUTF("oneplayerwin");
+					} catch (IOException e1) {
+					}
+				Isnext = true;
+				chupai.setVisible(false);
+				buchu.setVisible(false);
+			}
+
+			if (e.getSource() == buchu) {
+				buchuarea[seatnum].setVisible(true);
+				Playsound.play("audio//Man//buyao"
+						+ (new Random().nextInt(100) % 4 + 1) + ".wav");
+				Cardreturn();
+
+				try {
+					os.writeUTF("gameinfo");
+					os.writeUTF("buchu");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				Isnext = true;
+				hideDown();
+				chupai.setVisible(false);
+				buchu.setVisible(false);
+			}
+		}
+		if (e.getSource() instanceof Card) {
+			for (int i = 1; i <= 13; i++)
+				if (e.getSource() == card[i] && !cardsend[i]) {
+					if (cardclick[i] == false) {
+						cardclick[i] = true;
+						Cardup(card[i], 15);
+					} else {
+						cardclick[i] = false;
+						Cardup(card[i], -15);
+					}
+					break;
+				}
+		}
+		if (e.getSource() == exit)
+			sureExit();
+	}
+	public void run() {
+		while (true) {
+			try {
+				String s = is.readUTF();
+				if (s.equals("gamestart")) {
+					String allcards = is.readUTF();
+					firstchupai = Integer.parseInt(is.readUTF());// 最先出牌的seat号
+					CARDS = allcards.split("#");
+					initcard();
+					startflag = true; // 本局开始
+					if (!startanimation.isAlive()) {
+						startanimation = new Startanimation();
+						startanimation.start();
+					}
+					Playsound.play("audio//start.wav");
+					leftcardnum[(seatnum + 1) % 4].setVisible(true);
+					leftcardnum[(seatnum + 1) % 4].setText("剩余张数：13");
+					leftcardnum[(seatnum + 2) % 4].setVisible(true);
+					leftcardnum[(seatnum + 2) % 4].setText("剩余张数：13");
+					leftcardnum[(seatnum + 3) % 4].setVisible(true);
+					leftcardnum[(seatnum + 3) % 4].setText("剩余张数：13");
+				}
+				
+				if (s.equals("oneplayerjiaofen")) {
+					int sn = Integer.parseInt(is.readUTF());
+					int number = Integer.parseInt(is.readUTF());
+					Isnext = true;
+					if ((sn + 1) % 4 == this.seatnum&&flag<=4) {
+						flag++;
+						if(number==0) {
+							no.setVisible(true);
+							one.setVisible(true);
+							two.setVisible(true);
+							three.setVisible(true);
+						}
+						else if(number==1) {
+							no.setVisible(true);
+							two.setVisible(true);
+							three.setVisible(true);
+						}
+						else if(number==2) {
+							no.setVisible(true);
+							three.setVisible(true);
+						}
+
+					}
+					if((sn + 1) % 4 == this.seatnum&&flag>4) {
+						no.setVisible(false);
+						one.setVisible(false);
+						two.setVisible(false);
+						three.setVisible(false);
+						
+					}
+					repaint();
+				}
+				if(s.equals("jiaofenjieguo")) {
+					firstchupai = Integer.parseInt(is.readUTF());
+					if(firstchupai==this.seatnum) {
+						chupai.setVisible(true);
+						flag=5;
+					}
+					repaint();
+				}
+			} catch (IOException e) {
+				this.dispose();
+			}
+		}
+	}
 }
