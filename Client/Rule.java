@@ -1,3 +1,5 @@
+package game;
+
 
 import java.util.Random;
 
@@ -107,7 +109,7 @@ public class Rule {
 				result = true;
 				Playsound.play("audio//Man//shunzi.wav");
 			}
-			if (sansanerer(y) != 0) {
+			if (feiji10(y) != 0) {
 				result = true;
 
 			}
@@ -141,6 +143,124 @@ public class Rule {
 				result = true;
 				Playsound.play("audio//Man//shunzi.wav");
 			}
+		case 14:
+			if (liandui(y) != 0) {
+				result = true;
+				Playsound.play("audio//Man//liandui.wav");
+			}
+		case 15:
+			if (sansan(y) != 0) {
+				result = true;
+				Playsound.play("audio//Man//sange.wav");
+			}
+			if (feiji10(y) != 0) {
+				result = true;
+
+			}
+		case 16:
+			if (liandui(y) != 0) {
+				result = true;
+				Playsound.play("audio//Man//liandui.wav");
+			}
+		case 17:
+//			if (shunzi(y) != 0) {
+//				result = true;
+//				Playsound.play("audio//Man//shunzi.wav");
+//			}
+		case 18:
+			if (liandui(y) != 0) {
+				result = true;
+				Playsound.play("audio//Man//liandui.wav");
+			}
+			if (sansan(y) != 0) {
+				result = true;
+				Playsound.play("audio//Man//sange.wav");
+			}
+		case 19:
+//			if (shunzi(y) != 0) {
+//				result = true;
+//				Playsound.play("audio//Man//shunzi.wav");
+//			}
+		case 20:
+			if (liandui(y) != 0) {
+				result = true;
+				Playsound.play("audio//Man//liandui.wav");
+			}
+			if (feiji10(y) != 0) {
+				result = true;
+
+			}
+		case 21:
+			if (sansan(y) != 0) {
+				result = true;
+				Playsound.play("audio//Man//sange.wav");
+			}
+		case 22:
+			if (liandui(y) != 0) {
+				result = true;
+				Playsound.play("audio//Man//liandui.wav");
+			}
+		case 23:
+//			if (shunzi(y) != 0) {
+//				result = true;
+//				Playsound.play("audio//Man//shunzi.wav");
+//			}
+		case 24:
+			if (sansan(y) != 0) {
+				result = true;
+				Playsound.play("audio//Man//sange.wav");
+			}
+			if (liandui(y) != 0) {
+				result = true;
+				Playsound.play("audio//Man//liandui.wav");
+			}
+		case 25:
+		
+			if (feiji10(y) != 0) {
+				result = true;
+
+			}
+		case 26:
+			if (liandui(y) != 0) {
+				result = true;
+				Playsound.play("audio//Man//liandui.wav");
+			}
+		case 27:
+			if (sansan(y) != 0) {
+				result = true;
+				Playsound.play("audio//Man//sange.wav");
+			}
+		case 28:
+//			if (shunzi(y) != 0) {
+//				result = true;
+//				Playsound.play("audio//Man//shunzi.wav");
+//			}
+		case 29:
+//			if (shunzi(y) != 0) {
+//				result = true;
+//				Playsound.play("audio//Man//shunzi.wav");
+//			}
+		case 30:
+			if (sansan(y) != 0) {
+				result = true;
+				Playsound.play("audio//Man//sange.wav");
+			}
+		case 31:
+//			if (shunzi(y) != 0) {
+//				result = true;
+//				Playsound.play("audio//Man//shunzi.wav");
+//			}
+		case 32:
+//			if (shunzi(y) != 0) {
+//				result = true;
+//				Playsound.play("audio//Man//shunzi.wav");
+//			}
+		case 33:
+			if (sansan(y) != 0) {
+				result = true;
+				Playsound.play("audio//Man//sange.wav");
+			}
+			
 			break;
 		}
 		return result;
@@ -242,12 +362,18 @@ public class Rule {
 				result = true;
 			if (sansan(dataX) > sansan(dataY))
 				result = true;
+			
 			break;
 		case 10:
 			if (shunzi(dataX) > shunzi(dataY))
 				result = true;
-			if (sansanerer(dataX) > sansanerer(dataY))
+			if (liandui(dataX) > liandui(dataY))
 				result = true;
+			
+			if (feiji10(dataX) > feiji10(dataY))
+				result = true;
+			
+			
 			break;
 		case 11:
 			if (shunzi(dataX) > shunzi(dataY))
@@ -264,6 +390,72 @@ public class Rule {
 		case 13:
 			if (shunzi(dataX) > shunzi(dataY))
 				result = true;
+		case 14:
+			if (liandui(dataX) > liandui(dataY))
+				result = true;
+		case 15:
+			if (sansan(dataX) > sansan(dataY))
+				result = true;
+		case 16:
+			if (liandui(dataX) > liandui(dataY))
+				result = true;
+		case 17:
+//			if (shunzi(dataX) > shunzi(dataY))
+//				result = true;
+		case 18:
+			if (liandui(dataX) > liandui(dataY))
+				result = true;
+		case 19:
+//			if (shunzi(dataX) > shunzi(dataY))
+//				result = true;
+		case 20:
+			if (liandui(dataX) > liandui(dataY))
+				result = true;
+			if (feiji20(dataX) > feiji20(dataY))
+				result = true;
+			
+		case 21:
+			if (sansan(dataX) > sansan(dataY))
+				result = true;
+		case 22:
+			if (liandui(dataX) > liandui(dataY))
+				result = true;
+		case 23:
+//			if (shunzi(dataX) > shunzi(dataY))
+//				result = true;
+		case 24:
+			if (sansan(dataX) > sansan(dataY))
+				result = true;
+			if (liandui(dataX) > liandui(dataY))
+				result = true;
+		case 25:
+			if (feiji25(dataX) > feiji25(dataY))
+				result = true;
+		case 26:
+			if (liandui(dataX) > liandui(dataY))
+				result = true;
+		case 27:
+			if (sansan(dataX) > sansan(dataY))
+				result = true;
+		case 28:
+//			if (shunzi(dataX) > shunzi(dataY))
+//				result = true;
+		case 29:
+//			if (shunzi(dataX) > shunzi(dataY))
+//				result = true;
+		case 30:
+			if (sansan(dataX) > sansan(dataY))
+				result = true;
+		case 31:
+//			if (shunzi(dataX) > shunzi(dataY))
+//				result = true;
+		case 32:
+//			if (shunzi(dataX) > shunzi(dataY))
+//				result = true;
+		case 33:
+			if (sansan(dataX) > sansan(dataY))
+				result = true;
+			
 			break;
 		}
 		if (result)
@@ -275,20 +467,20 @@ public class Rule {
 	/*
 	 * 
 	 */
-	private static int sansanerer(int[] y) {//三带二
-		if (y[0] == y[1] && y[2] == y[3] && y[4] == y[5] && y[5] == y[6]
-				&& y[6] == y[7] - 1 && y[7] == y[8] && y[8] == y[9])
-			return y[4];
-		else if (y[0] == y[1] && y[2] == y[3] && y[3] == y[4]
-				&& y[4] == y[5] - 1 && y[5] == y[6] && y[6] == y[7]
-				&& y[8] == y[9])
-			return y[2];
-		else if (y[0] == y[1] && y[1] == y[2] && y[2] == y[3] - 1
-				&& y[3] == y[4] && y[4] == y[5] && y[6] == y[7] && y[8] == y[9])
-			return y[0];
-		return 0;
-	}
-	
+//	private static int sansanerer(int[] y) {//三带二
+//		if (y[0] == y[1] && y[2] == y[3] && y[4] == y[5] && y[5] == y[6]
+//				&& y[6] == y[7] - 1 && y[7] == y[8] && y[8] == y[9])
+//			return y[4];
+//		else if (y[0] == y[1] && y[2] == y[3] && y[3] == y[4]
+//				&& y[4] == y[5] - 1 && y[5] == y[6] && y[6] == y[7]
+//				&& y[8] == y[9])
+//			return y[2];
+//		else if (y[0] == y[1] && y[1] == y[2] && y[2] == y[3] - 1
+//				&& y[3] == y[4] && y[4] == y[5] && y[6] == y[7] && y[8] == y[9])
+//			return y[0];
+//		return 0;
+//	}
+//	
 	
 //	private static int sandaiyi(int[] y) {  //三带1
 //		if (y[0] == y[1] && y[2] == y[3] )
