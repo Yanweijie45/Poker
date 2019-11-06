@@ -33,7 +33,7 @@ public class GameOptions extends JFrame implements MouseListener {
 	JRadioButton close,open;
 	
 
-	JButton LGbutton,RGbutton;//µÇÂ¼¡¢×¢²á°´Å¥
+	JButton LGbutton,RGbutton;//ç™»å½•ã€æ³¨å†ŒæŒ‰é’®
 
 	String serverIP;
 
@@ -49,7 +49,7 @@ public class GameOptions extends JFrame implements MouseListener {
 	}
 
 	public void initGUI() {
-		setTitle("ÓÎÏ·ÉèÖÃ");
+		setTitle("æ¸¸æˆè®¾ç½®");
 		setIconImage(new ImageIcon("pics\\Rush.png").getImage());
 		setBounds(450, 140, 400, 400);
 		setVisible(true);
@@ -59,34 +59,34 @@ public class GameOptions extends JFrame implements MouseListener {
 		Allarea.setImageFile(new File("pics\\login_bg.png"));
 		add(Allarea);
 		Allarea.setLayout(null);
-		lbid = new JLabel("±¾ÓÎÏ·ÊÇÓÉXXXÍÅ¶ÓÖÆ×÷£¬·ÂÃ°±Ø¾¿£¡ ");
+		lbid = new JLabel("æœ¬æ¸¸æˆæ˜¯ç”±XXXå›¢é˜Ÿåˆ¶ä½œï¼Œä»¿å†’å¿…ç©¶ï¼ ");
 		lbid.setBounds(70, 60, 250, 50);
-		lbpsw1 = new JLabel("ËÄÈË¶·µØÖ÷ÊÇÒ»¸öÀÏÉÙ½ÔÒËµÄÓÎÏ·£¬Ï£Íû");
+		lbpsw1 = new JLabel("å››äººæ–—åœ°ä¸»æ˜¯ä¸€ä¸ªè€å°‘çš†å®œçš„æ¸¸æˆï¼Œå¸Œæœ›");
 		lbpsw1.setBounds(70, 80, 250, 50);
-		lbpsw2 = new JLabel("ÄãÔÚÓÎÏ·µÄ¹ı³ÌÖĞÄÜ¹»ÍæµÄÓä¿ì");
+		lbpsw2 = new JLabel("ä½ åœ¨æ¸¸æˆçš„è¿‡ç¨‹ä¸­èƒ½å¤Ÿç©çš„æ„‰å¿«");
 		lbpsw2.setBounds(70, 100, 250, 50);
 		
-		music = new JLabel("ÒôĞ§£º");
+		music = new JLabel("éŸ³æ•ˆï¼š");
 		music.setBounds(70, 180, 250, 50);
 		
 
 		group = new ButtonGroup();
-		close = new JRadioButton("¹Ø±Õ");
+		close = new JRadioButton("å…³é—­");
 		close.setBounds(140, 180, 100, 50);
 		close.setContentAreaFilled(false);
 		
-		open = new JRadioButton("¿ªÆô");
+		open = new JRadioButton("å¼€å¯");
 		open.setBounds(220, 180, 100, 50);
 		open.setContentAreaFilled(false);
 		
-		Judge();
+	
 		
 		group.add(close);
 		group.add(open);
 		
 		
-		LGbutton = new JButton("È¡Ïû");//µÇÂ¼°´Å¥
-		RGbutton = new JButton("±£´æÉèÖÃ");//×¢²á°´Å¥
+		LGbutton = new JButton("å–æ¶ˆ");//ç™»å½•æŒ‰é’®
+		RGbutton = new JButton("ä¿å­˜è®¾ç½®");//æ³¨å†ŒæŒ‰é’®
 		LGbutton.setBounds(60, 280, 60, 40);
 		LGbutton.setContentAreaFilled(false);
 		LGbutton.addMouseListener((MouseListener) this);
@@ -111,32 +111,11 @@ public class GameOptions extends JFrame implements MouseListener {
 		
 		
 	}
-	private void Judge() {
-		// TODO Auto-generated method stub
-		try {
-			s = new Socket(serverIP, 6666);
-			is = new DataInputStream(s.getInputStream());
-			os = new DataOutputStream(s.getOutputStream());
-			os.writeUTF("GameOption1");
-			String state = is.readUTF();
-			if(state.equals("close")) {
-				close.setSelected(true);
-				close.setSelected(false);
-			}
-			else {
-				open.setSelected(true);
-				open.setSelected(false);
-			}
-			
-		} catch (Exception e) {
 
-		}	
-		repaint();		
-	}
 
 	public void mouseClicked(MouseEvent e) {
 		if(e.getSource()==RGbutton){
-			JOptionPane.showMessageDialog(this, "±£´æ³É¹¦£¡", "ÌáÊ¾",
+			JOptionPane.showMessageDialog(this, "ä¿å­˜æˆåŠŸï¼", "æç¤º",
 			JOptionPane.WARNING_MESSAGE);
 			save();
 			Allarea.setVisible(false);
