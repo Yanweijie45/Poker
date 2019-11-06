@@ -552,6 +552,83 @@ public class Gamearea extends JFrame implements MouseListener, Runnable,
 					}
 					repaint();
 				}
+				if (s.equals("oneplayerchupai")) {
+					int sn = Integer.parseInt(is.readUTF());
+					cardinfo = (is.readUTF()).split("#");
+					hidefrontcard(sn);
+					int length = cardinfo.length;
+					int leftnum = Integer.parseInt(leftcardnum[sn].getText()
+							.substring(5, leftcardnum[sn].getText().length()));
+					leftcardnum[sn].setText("剩余张数：" + (leftnum - length));
+					for (int i = 0; i < length; i++) {
+						cardfront[sn][(13 - length) / 2 + i]
+								.setImage("pics//cards//"
+										+ cardinfo[i].charAt(0)
+										+ cardinfo[i].substring(1, cardinfo[i]
+												.length()) + ".gif");
+						cardfront[sn][(13 - length) / 2 + i].setVisible(true);
+						repaint();
+					}
+					buchuarea[sn].setVisible(false);
+					Isnext = true;
+					if ((sn + 1) % 4 == this.seatnum) {
+						hideDown();
+						buchuarea[seatnum].setVisible(false);
+						chupai.setVisible(true);
+						buchu.setVisible(true);
+					}
+					repaint();
+				}
+				/*
+				 * 不出
+				 */
+				if (s.equals("oneplayerbuchu")) {
+					int sn = Integer.parseInt(is.readUTF());
+					buchuarea[sn].setVisible(true);
+					hidefrontcard(sn);
+					Isnext = true;
+					if ((sn + 1) % 4 == this.seatnum) {
+						hideDown();
+						chupai.setVisible(true);
+						buchu.setVisible(true);
+						if (Rule.Issame(myoldcard, cardinfo)) {
+							buchu.setVisible(false);
+						}
+					}
+					repaint();
+				}
+				/*
+				 * 超时
+				 */
+				if (s.equals("oneplayerchaoshi")) {
+					int sn = Integer.parseInt(is.readUTF());
+					int number = Integer.parseInt(is.readUTF());
+					if ((sn + 1) % 4 == this.seatnum&&flag<=4) {
+						flag++;
+						if(number<=0) {
+							no.setVisible(true);
+							one.setVisible(true);
+							two.setVisible(true);
+							three.setVisible(true);
+						}
+						else if(number==1) {
+							no.setVisible(true);
+							two.setVisible(true);
+							three.setVisible(true);
+						}
+						else if(number==2) {
+							no.setVisible(true);
+							three.setVisible(true);
+						}
+
+					}
+					if ((sn + 1) % 4 == this.seatnum&&flag>4) {
+						hideDown();
+						chupai.setVisible(true);
+						buchu.setVisible(true);
+					}
+					repaint();
+				}
 			} catch (IOException e) {
 				this.dispose();
 			}
