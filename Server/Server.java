@@ -367,6 +367,21 @@ public class Server extends JFrame implements ActionListener {
 								}
 							}
 						}
+						else if (type.equals("chaoshipd")) {
+							int flag=Integer.parseInt(is.readUTF());
+							System.out.println("chaoshipd");
+							if(flag==5) {
+								int dizu=Maxnumber(numbers);
+								if(numbers[Maxnumber(numbers)]==0) {
+									dizu=(new Random().nextInt(100) % 4);
+								}
+								for (int i = 0; i < playerlist.size(); i++) {
+									ServerThread th = playerlist.get(i);
+									th.os.writeUTF("jiaofenjieguo");
+									th.os.writeUTF(dizu + "");
+								}
+							}
+						}
 						else if (type.equals("buchu")) {
 							for (int i = 0; i < playerlist.size(); i++) {
 								ServerThread th = playerlist.get(i);
