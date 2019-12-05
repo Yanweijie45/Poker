@@ -1444,10 +1444,41 @@ public class Gamearea extends JFrame implements MouseListener, Runnable,
 				 */
 				if (s.equals("oneplayerchaoshi")) {
 					int sn = Integer.parseInt(is.readUTF());
-					if ((sn + 1) % 4 == this.seatnum) {
+					int number = Integer.parseInt(is.readUTF());
+					if ((sn + 1) % 4 == this.seatnum&&flag<=4) {
+						flag++;
+						if(number==0) {
+							no.setVisible(true);
+							one.setVisible(true);
+							two.setVisible(true);
+							three.setVisible(true);
+						}
+						else if(number==1) {
+							no.setVisible(true);
+							two.setVisible(true);
+							three.setVisible(true);
+						}
+						else if(number==2) {
+							no.setVisible(true);
+							three.setVisible(true);
+						}
+
+					}
+					if ((sn + 1) % 4 == this.seatnum&&flag>5) {
+						System.out.println("调试");
 						hideDown();
 						chupai.setVisible(true);
 						buchu.setVisible(true);
+						no.setVisible(false);
+						one.setVisible(false);
+						two.setVisible(false);
+						three.setVisible(false);
+					}
+					if(flag==5) {
+						os.writeUTF("gameinfo");
+						os.writeUTF("chaoshipd");
+						os.writeUTF(flag+"");
+						//flag++;
 					}
 					repaint();
 				}
