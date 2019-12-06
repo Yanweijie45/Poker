@@ -1,62 +1,50 @@
 package game;
 
-import java.awt.event.MouseEvent;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.net.Socket;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
 
-import javax.swing.JOptionPane;
+public class ReadTxt {
 
-public class MusicBg {
-	private void Judge() {
-		// TODO Auto-generated method stub
-		try {
-			s = new Socket(serverIP, 6666);
-			is = new DataInputStream(s.getInputStream());
-			os = new DataOutputStream(s.getOutputStream());
-			os.writeUTF("GameOption1");
-			String state = is.readUTF();
-			if(state.equals("close")) {
-				close.setSelected(true);
-				close.setSelected(false);
-			}
-			else {
-				open.setSelected(true);
-				open.setSelected(false);
-			}
-			
-		} catch (Exception e) {
+    public static String readTxt(String txtPath) {
+        File file = new File(txtPath);
+        if(file.isFile() && file.exists()){
+            try {
+                FileInputStream fileInputStream = new FileInputStream(file);
+                InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                 
+                StringBuffer sb = new StringBuffer();
+                String text = null;
+                while((text = bufferedReader.readLine()) != null){
+                    sb.append(text);
+                }
+                return sb.toString();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+    
 
-		}	
-		repaint();		
-	}
-
-	public void mouseClicked(MouseEvent e) {
-		if(e.getSource()==RGbutton){
-			JOptionPane.showMessageDialog(this, "����ɹ���", "��ʾ",
-			JOptionPane.WARNING_MESSAGE);
-			save();
-			Allarea.setVisible(false);
-			setVisible(false);
-		}
-		if(e.getSource()==LGbutton) {
-			this.dispose();
-		}
-	}
-	@SuppressWarnings("deprecation")
-	public void save() {
-		try {
-			s = new Socket(serverIP, 6666);
-			is = new DataInputStream(s.getInputStream());
-			os = new DataOutputStream(s.getOutputStream());
-			os.writeUTF("GameOption2");
-			if(open.isSelected()==true) {
-				os.writeUTF("1");
-			}
-			else {
-				os.writeUTF("2");
-			}		
-		} catch (Exception e) {
-
-		}
+ 
+    public static void writeTxt(String txtPath,String content){    
+       FileOutputStream fileOutputStream = null;
+       File file = new File(txtPath);
+       try {
+           if(file.exists()){
+               //判断文件是否存在，如果不存在就新建一个txt
+               file.createNewFile();
+           }
+           fileOutputStream = new FileOutputStream(file);
+           fileOutputStream.write(content.getBytes());
+           fileOutputStream.flush();
+           fileOutputStream.close();
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+    }
 }
