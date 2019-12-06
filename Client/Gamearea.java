@@ -1576,9 +1576,16 @@ public class Gamearea extends JFrame implements MouseListener, Runnable,
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+		if (e.getSource() == send) {
+			receive.append(playerID + "说: " + send.getText() + "\n");
+			try {
+				os.writeUTF("gametalking");
+				os.writeUTF(send.getText());
+			} catch (IOException e1) {
+			}
+			send.setText("");
+		}
 	}
-
-
+	
+	
 }
