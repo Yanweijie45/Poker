@@ -414,6 +414,21 @@ public class Server extends JFrame implements ActionListener {
 						}
 
 					}
+					if (s.equals("oneplayerwin")) {
+						for (int i = 0; i < playerlist.size(); i++) {
+							ServerThread th = playerlist.get(i);
+							if (th != this && th.tablenum == this.tablenum
+									&& th.location.equals("seat")) {
+								dao.updateScore(th.id, -5);
+								th.os.writeUTF("youfailed");
+								th.os.writeUTF(this.id + "");
+							}
+							if (th == this) {
+								os.writeUTF("youwin");
+								dao.updateScore(id, 15);
+							}
+						}
+					}
 				} catch (IOException e) {
 					try {
 						socket.close();
