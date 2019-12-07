@@ -12,9 +12,7 @@ public class Dao {
 		
 	}
 
-	/*
-	 * 检查账号和密码是否正确
-	 */
+
 	public String Check(String id, String psw) {
 		String info = "0"; 
 		try {
@@ -37,9 +35,7 @@ public class Dao {
 		return info;
 	}
 
-	/*
-	 * 检查账号是否存在
-	 */
+
 	public boolean Check(String id) {
 		try {
 			Connection con = JDBCUtil.getConnection();
@@ -55,9 +51,7 @@ public class Dao {
 		return false;
 	}
 
-	/*
-	 * 设置状态
-	 */
+
 	public void setState(String state, String id) {
 		try {
 			Connection con = JDBCUtil.getConnection();
@@ -72,9 +66,7 @@ public class Dao {
 		}
 	}
 
-	/*
-	 * 所有人状态均置0或1
-	 */
+
 	public void setAllState(String state) {
 		try {
 			Connection con = JDBCUtil.getConnection();
