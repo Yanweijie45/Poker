@@ -1532,7 +1532,7 @@ public class Gamearea extends JFrame implements MouseListener, Runnable,
 					JOptionPane.showMessageDialog(null,  name + "胜利！您失败了","提示",
 							JOptionPane.INFORMATION_MESSAGE);
 					startflag = false;
-					Isfirst = false; // 此时已经不是第一盘
+					Isfirst = false; 
 					timearea.setIcon(null);
 					start.setVisible(true);
 					chupai.setVisible(false);
