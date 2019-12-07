@@ -1,4 +1,4 @@
-package game;
+package x;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -6,10 +6,15 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 
-public class ReadTxt {
-
-    public static String readTxt(String txtPath) {
-        File file = new File(txtPath);
+public class test {
+    public static String musicbg = "profile\\musicbg.txt";
+    public static void main(String[] args) {
+    	String x=readbg();
+    	System.out.println(x);
+    }
+    public static String readbg() {
+    	
+        File file = new File(musicbg);
         if(file.isFile() && file.exists()){
             try {
                 FileInputStream fileInputStream = new FileInputStream(file);
@@ -30,21 +35,5 @@ public class ReadTxt {
     }
     
 
- 
-    public static void writeTxt(String txtPath,String content){    
-       FileOutputStream fileOutputStream = null;
-       File file = new File(txtPath);
-       try {
-           if(file.exists()){
-               //判断文件是否存在，如果不存在就新建一个txt
-               file.createNewFile();
-           }
-           fileOutputStream = new FileOutputStream(file);
-           fileOutputStream.write(content.getBytes());
-           fileOutputStream.flush();
-           fileOutputStream.close();
-       } catch (Exception e) {
-           e.printStackTrace();
-       }
-    }
+
 }
