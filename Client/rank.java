@@ -16,9 +16,11 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
+import java.sql.ResultSet;
 import java.util.Enumeration;
 import java.util.Random;
 
+import javax.print.DocFlavor.STRING;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -64,25 +66,23 @@ public class rank extends JFrame implements MouseListener {
 			e.printStackTrace();
 		}
 	}
+    
+
 
 	
 	JLabel rank;
 	JLabel head,left,right;
 	
-	Object[] columnNames = {"账号", "积分", "排名"};
-	Object[][] rowData = {
-			{"张三", 80, 80, 80},
-            {"John", 70, 80, 240},
-            {"Sue", 70, 70, 210},
-            {"Jane",  70, 60, 210},
-            {"Joe",  70, 60, 210},
-            {"Joe",  70, 60, 210},
-            {"Joe",  70, 60, 210}
-           
-         
-	};
-	JTable table = new JTable(rowData, columnNames);
-
+	
+	Dao a =new Dao();
+	
+	
+	
+	
+	
+	
+		
+	
 	
 	rank(){
 	initGUI();
@@ -90,9 +90,54 @@ public class rank extends JFrame implements MouseListener {
 
 	 
 	public void initGUI() {
+		int num=0;
+		String [][]a1 = a.showall();
+		for (int i = 0;a1[i][0]!=null; i++) {
+		//	System.out.println(a1[i][0]);
+			num++;
+			//System.out.println(a1[i][1]);
+		}
+		String [][]all=  new String [num][3];
 		
+		for (int i = 0;a1[i][0]!=null; i++) {
+			all[i][0]=a1[i][0];
+			all[i][1]=a1[i][1];
+		}
 		
-	
+		String tmp1,tmp2;
+		for (int i = 0;i<num; i++) {
+            for(int j=0;j<num-1-i;j++) {
+            	if(Integer.parseInt(all[j][1])<Integer.parseInt(all[j+1][1]))
+            		{
+            	//	System.out.println(Integer.parseInt(all[i][1]));
+            		tmp1=all[j][0];
+                    tmp2=all[j][1];
+                    all[j][0]=all[j+1][0];
+                    all[j][1]=all[j+1][1];
+                    all[j+1][0]=tmp1;
+                    all[j+1][1]=tmp2;
+            		}
+            }
+		}
+		for (int i = 0;i<num; i++) {
+			System.out.println(all[i][1]);
+			
+		}
+
+		Object[] columnNames = {"排名","账号", "积分"};
+		
+	 	Object[][] rowData = new Object[num][3];
+				 
+		
+	 	for (int i = 0;i<num; i++) {
+	 		rowData[i][1]=all[i][0];
+	 		rowData[i][2]=all[i][1];
+	 		rowData[i][0]=i+1;}
+	 	         
+            	
+		JTable table = new JTable(rowData, columnNames);
+
+		
 		setSize(500, 400);
 		Color c = new Color(255,255,224);
 		setTitle("rank");
