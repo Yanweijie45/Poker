@@ -19,6 +19,9 @@ import java.sql.Statement;
 import javax.swing.*;
 
 public class GameOptions extends JFrame implements MouseListener {
+	
+	MusicBg bg=null;
+	
 	PanelArea Allarea;
 
 	JTextField Loginid;
@@ -48,7 +51,7 @@ public class GameOptions extends JFrame implements MouseListener {
 		initGUI();
 	}
 
-	public void initGUI() {
+	 void initGUI() {
 		setTitle("游戏设置");
 		setIconImage(new ImageIcon("pics\\Rush.png").getImage());
 		setBounds(450, 140, 400, 400);
@@ -79,11 +82,20 @@ public class GameOptions extends JFrame implements MouseListener {
 		open.setBounds(220, 180, 100, 50);
 		open.setContentAreaFilled(false);
 		
-	
+		
+		String flag = bg.readbg();
+
 		
 		group.add(close);
 		group.add(open);
 		
+		
+		if (flag.equals("1")==true) {
+			open.setSelected(true);
+		}
+		else {		
+			close.setSelected(true);
+		}
 		
 		LGbutton = new JButton("取消");//登录按钮
 		RGbutton = new JButton("保存设置");//注册按钮
@@ -106,40 +118,30 @@ public class GameOptions extends JFrame implements MouseListener {
 		Allarea.add(lbid);
 		Allarea.add(lbpsw1);
 		Allarea.add(lbpsw2);
-		Allarea.add(Loginid);
-		Allarea.add(Password);
 		
 		
 	}
 
 
 	public void mouseClicked(MouseEvent e) {
+		String flag;
 		if(e.getSource()==RGbutton){
 			JOptionPane.showMessageDialog(this, "保存成功！", "提示",
 			JOptionPane.WARNING_MESSAGE);
-			save();
+			if(open.isSelected()==true) {
+				flag = "1";
+				bg.writebg(flag);
+			}
+			else {
+				flag = "0";
+				bg.writebg(flag);
+			} 
+			
 			Allarea.setVisible(false);
 			setVisible(false);
 		}
 		if(e.getSource()==LGbutton) {
 			this.dispose();
-		}
-	}
-	@SuppressWarnings("deprecation")
-	public void save() {
-		try {
-			s = new Socket(serverIP, 6666);
-			is = new DataInputStream(s.getInputStream());
-			os = new DataOutputStream(s.getOutputStream());
-			os.writeUTF("GameOption2");
-			if(open.isSelected()==true) {
-				os.writeUTF("1");
-			}
-			else {
-				os.writeUTF("2");
-			}		
-		} catch (Exception e) {
-
 		}
 	}
 	@Override
