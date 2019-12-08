@@ -1439,9 +1439,7 @@ public class Gamearea extends JFrame implements MouseListener, Runnable,
 					}
 					repaint();
 				}
-				/*
-				 * 超时
-				 */
+		
 				if (s.equals("oneplayerchaoshi")) {
 					int sn = Integer.parseInt(is.readUTF());
 					int number = Integer.parseInt(is.readUTF());
@@ -1482,9 +1480,7 @@ public class Gamearea extends JFrame implements MouseListener, Runnable,
 					}
 					repaint();
 				}
-				/*
-				 * 胜利
-				 */
+		
 				if (s.equals("youwin")) {
 					startflag = false;
 					JOptionPane.showMessageDialog(null, "恭喜,您获得胜利！", "提示",
